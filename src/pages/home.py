@@ -213,18 +213,159 @@ def render():
         max-width: 100%;
         object-fit: contain;
       }
+
+      .demo-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 80px 0;
+        text-align: center;
+      }
+
+      .demo-content {
+        max-width: 600px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+      }
+
+      .demo-buttons {
+        display: flex;
+        gap: 16px;
+        margin-top: 20px;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 1200px) {
+        .header-feature {
+          grid-template-columns: 1fr 700px;
+        }
+
+        .solution-section {
+          gap: 40px;
+        }
+      }
+
+      @media (max-width: 992px) {
+        .header-feature {
+          grid-template-columns: 1fr;
+          gap: 30px;
+        }
+
+        .feature-right-part {
+          border-left: none;
+          border-top: 2px solid #222222;
+          padding-top: 30px;
+        }
+         html {
+                scroll-behavior: smooth;
+            }
+
+        .solution-section {
+          grid-template-columns: 1fr;
+          gap: 30px;
+        }
+
+        .solution-left {
+          order: 2;
+        }
+
+        .solution-right {
+          order: 1;
+        }
+
+        .tasks-container {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .header-info {
+          margin-top: 100px;
+          padding: 0 1rem;
+        }
+
+        .header-title {
+          width: 100%;
+        }
+
+        .section-title {
+          font-size: 32px;
+        }
+
+        .tasks-container {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .task-card {
+          max-width: 100%;
+          height: auto;
+          min-height: 400px;
+        }
+
+        .feature-buttons {
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .button, .outline-button {
+          width: 100%;
+          text-align: center;
+        }
+
+        .demo-buttons {
+          flex-direction: column;
+          gap: 12px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .header-info {
+          margin-top: 80px;
+        }
+
+        .section-title {
+          font-size: 24px;
+        }
+
+        .header-slogan {
+          font-size: 12px;
+        }
+
+        .feature-p {
+          font-size: 13px !important;
+        }
+
+        .card-title {
+          font-size: 18px;
+        }
+
+        .p-desc {
+          font-size: 13px;
+        }
+
+        .task-card {
+          padding: 24px;
+          min-height: 350px;
+        }
+
+        .card-info {
+          padding: 24px;
+        }
+      }
     </style>
     """, unsafe_allow_html=True)
 
     st.markdown(f"""
-    <div class="header-info">
+    <div id="home" class="section-anchor header-info">
       <div class="header-title">
         <span class="header-slogan">[ Слоган ]</span>
         <span class="section-title">
           Сложные контракты<br/>Простые решения
         </span>
       </div>
-
       <div class="header-feature">
         <div class="feature-left-part">
             <p class="feature-p">
@@ -237,13 +378,12 @@ def render():
             Наш AI-ассистент автоматизирует аудит валютных контрактов, сокращает время проверки с 30 минут до 2 минут и снижает риски. Мы превращаем рутину в быстрые и точные решения.
           </p>
           <div class="feature-buttons">
-            <button class="button">Попробовать демо</button>
+            <a href="?page=demo"><button class="button">Попробовать Демо</button></a>
             <button class="outline-button">Узнать больше</button>
           </div>
         </div>
       </div>
-
-      <div class="tasks-section">
+      <div id="tasks" class="section-anchor tasks-section">
             <span class="section-title">Задачи</span>
             <div class="tasks-container">
                 <div class="task-card">
@@ -282,7 +422,7 @@ def render():
                </div>
             </div>
       </div>
-      <div class="solution-section">
+      <div id="solution" class="section-anchor solution-section">
             <div class="solution-left">
                 {flow_image}
             </div>
@@ -296,24 +436,16 @@ def render():
                 </p>
                 <div class="features-list">
                     <div class="feature-item">
-                        {arrow_right_icon}
-                        <p class="p-desc">Проверка договора за 2 минуты вместо 30</p>
+                       {arrow_right_icon} <span class="feature-p">Автоматическое извлечение данных</span>
                     </div>
                     <div class="feature-item">
-                       {arrow_right_icon}
-                       <p class="p-desc">Автоматическое извлечение данных из документов</p>
+                        {arrow_right_icon}  <span class="feature-p">Проверка на нарушения</span>
                     </div>
                     <div class="feature-item">
-                       {arrow_right_icon}
-                       <p class="p-desc"> Проверка на нарушения и санкционный комплаенс</p>
-                    </div>
-                    <div class="feature-item">
-                       {arrow_right_icon}
-                       <p class="p-desc"> Готовый отчёт для сотрудника</p>
+                        {arrow_right_icon}  <span class="feature-p">Формирование отчётов</span>
                     </div>
                 </div>
-                <button class="button">Попробовать демо</button>
             </div>
-      </div>
+        </div>
     </div>
     """, unsafe_allow_html=True)

@@ -10,24 +10,26 @@ from pathlib import Path
 
 sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
 
-from src.pages import home
+from src.pages import home, demo
 from src.config.app_config import AppConfig
 
 st.set_page_config(
-    page_title="Frontend App",
+    page_title="ContractAI",
     page_icon="🚀",
     layout="wide"
 )
 
-st.markdown("""
-<style>
-</style>
-""", unsafe_allow_html=True)
-
-
 def main():
     config = AppConfig()
-    home.render()
+    
+    # Получаем текущий URL
+    query_params = st.query_params
+    
+    # Определяем какую страницу показывать
+    if 'page' in query_params and query_params['page'] == 'demo':
+        demo.render_demo_page()
+    else:
+        home.render()
 
 if __name__ == "__main__":
     main()

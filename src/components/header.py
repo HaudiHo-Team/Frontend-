@@ -1,9 +1,40 @@
 import streamlit as st
+import streamlit.components.v1 as components
 
 def render_page_header():
     st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    .stDeployButton {
+        display: none !important;
+    }
+
+    .stDecoration {
+        display: none !important;
+    }
+
+    .stStatusWidget {
+        display: none !important;
+    }
+
+    .stProgress {
+        display: none !important;
+    }
+
+    .stException {
+        display: none !important;
+    }
+
+
+    /* Стили для якорей */
+    .section-anchor {
+        scroll-margin-top: 20px;
+    }
 
     .header-content {
         display: flex;
@@ -12,7 +43,7 @@ def render_page_header():
         height: 45px;
         margin: 0 auto;
         font-family: 'Montserrat', sans-serif !important;
-
+        position: relative;
     }
 
     a {
@@ -29,6 +60,7 @@ def render_page_header():
         display: flex;
         align-items: center;
         gap: 1rem;
+        z-index: 1001;
     }
 
     .nav-section {
@@ -40,20 +72,228 @@ def render_page_header():
     .nav-link {
         color: white !important;
         text-decoration: none;
+        cursor:pointer !important;
         font-weight: 500;
         padding: 0.5rem 1rem;
         border-radius: 5px;
+        transition: color 0.3s ease;
     }
+
+    .nav-link:hover {
+        color: #6D4BC4 !important;
+    }
+
     .outline-button {
         padding: 11px 17px;
-          border: 1px solid transparent;
-          background:
-            linear-gradient(#0A0A0A, #0A0A0A) padding-box,
-            linear-gradient(90deg, #9588D4 47%, #4D476E 100%) border-box;
-          -webkit-background-clip: padding-box, border-box;
-          background-clip: padding-box, border-box;
-          -webkit-text-fill-color: initial;
+        border: 1px solid transparent;
+        background:
+          linear-gradient(#0A0A0A, #0A0A0A) padding-box,
+          linear-gradient(90deg, #9588D4 47%, #4D476E 100%) border-box;
+        -webkit-background-clip: padding-box, border-box;
+        background-clip: padding-box, border-box;
+        -webkit-text-fill-color: initial;
         border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .outline-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(109, 75, 196, 0.3);
+    }
+
+    /* Hamburger Menu */
+    .hamburger {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+        padding: 4px;
+        z-index: 1001;
+    }
+
+    .hamburger span {
+        width: 25px;
+        height: 3px;
+        background-color: white;
+        margin: 3px 0;
+        transition: 0.3s;
+        border-radius: 2px;
+    }
+
+    .hamburger.active span:nth-child(1) {
+        transform: rotate(-45deg) translate(-5px, 6px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+        transform: rotate(45deg) translate(-5px, -6px);
+    }
+
+    .mobile-menu {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background: rgba(10, 10, 10, 0.98);
+        backdrop-filter: blur(15px);
+        z-index: 1000;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 0;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        transform: translateY(-20px);
+    }
+
+    .mobile-menu.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    /* CSS-only hamburger menu using checkbox */
+    .hamburger-checkbox {
+        display: none;
+    }
+
+    .hamburger-label {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+        padding: 4px;
+        z-index: 1001;
+    }
+
+    .hamburger-label span {
+        width: 25px;
+        height: 3px;
+        background-color: white;
+        margin: 3px 0;
+        transition: 0.3s;
+        border-radius: 2px;
+    }
+
+    .hamburger-checkbox:checked ~ .mobile-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .hamburger-checkbox:checked ~ .hamburger-label span:nth-child(1) {
+        transform: rotate(-45deg) translate(-5px, 6px);
+    }
+
+    .hamburger-checkbox:checked ~ .hamburger-label span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger-checkbox:checked ~ .hamburger-label span:nth-child(3) {
+        transform: rotate(45deg) translate(-5px, -6px);
+    }
+
+    /* Мобильные ссылки теперь являются label для checkbox - автоматически закрывают меню */
+
+    .mobile-nav-link {
+        color: white !important;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 1.8rem;
+        padding: 1.5rem 3rem;
+        border-radius: 15px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        margin: 0.5rem 0;
+        min-width: 250px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+    .mobile-nav-link a {
+        color: white !important;
+        text-decoration: none;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .mobile-nav-link::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(109, 75, 196, 0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .mobile-nav-link:hover::before {
+        left: 100%;
+    }
+
+    .mobile-nav-link:hover {
+        color: #6D4BC4 !important;
+        background: rgba(109, 75, 196, 0.15);
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 8px 25px rgba(109, 75, 196, 0.3);
+    }
+
+    .mobile-button {
+        margin-top: 2rem;
+        padding: 18px 40px;
+        font-size: 1.2rem;
+        border-radius: 15px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        min-width: 250px;
+    }
+
+    .mobile-button:hover {
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 10px 30px rgba(109, 75, 196, 0.4);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .nav-section, .learn-more {
+            display: none;
+        }
+
+        .hamburger-label {
+            display: flex;
+        }
+
+        .mobile-menu {
+            display: flex;
+        }
+
+        .header-content {
+            padding: 0 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .logo-section svg {
+            width: 80px;
+            height: 20px;
+        }
+
+        .mobile-nav-link {
+            font-size: 1.2rem;
+            padding: 0.8rem 1.5rem;
+        }
     }
     </style>
     """, unsafe_allow_html=True)
@@ -68,15 +308,67 @@ def render_page_header():
                 </svg>
             </div>
             <div class="nav-section">
-                <a href="#" class="nav-link">Главная</a>
-                <a href="#" class="nav-link">Задача</a>
-                <a href="#" class="nav-link">AI-решение</a>
-                <a href="#" class="nav-link">Демо</a>
+                <a href="#home" class="nav-link">Главная</a>
+                <a href="#tasks" class="nav-link">Задача</a>
+                <a href="#solution" class="nav-link">AI-решение</a>
             </div>
             <div class="learn-more">
                 <button class="outline-button">
                     Узнать больше
                 </button>
             </div>
+            <input type="checkbox" id="hamburger-checkbox" class="hamburger-checkbox">
+            <label for="hamburger-checkbox" class="hamburger-label">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+            <div class="mobile-menu">
+               <label for="hamburger-checkbox" class="mobile-nav-link">
+                 <a href="#home">Главная</a>
+               </label>
+               <label for="hamburger-checkbox" class="mobile-nav-link">
+                 <a href="#tasks">Задача</a>
+               </label>
+               <label for="hamburger-checkbox" class="mobile-nav-link">
+                 <a href="#solution">AI-решение</a>
+               </label>
+            </div>
         </div>
+
     """, unsafe_allow_html=True)
+    st.markdown("""
+    <script>
+    function initHeader() {
+        function closeMenu() {
+            const checkbox = document.getElementById('hamburger-checkbox');
+            if (checkbox) checkbox.checked = false;
+        }
+
+        function scrollTo(targetId) {
+            const element = document.querySelector(targetId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function handleLinkClick(e) {
+            e.preventDefault();
+            const href = this.getAttribute('href');
+            closeMenu();
+            setTimeout(() => scrollTo(href), 100);
+        }
+
+        document.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', handleLinkClick);
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initHeader);
+    } else {
+        initHeader();
+    }
+    </script>
+    """, unsafe_allow_html=True)
+
