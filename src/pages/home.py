@@ -11,7 +11,7 @@ def render():
     hand_icon = load_icon("src/assets/icons/by-hand.svg", 48, 48)
     shield_icon = load_icon("src/assets/icons/shield.svg", 48, 48)
     speed_icon = load_icon("src/assets/icons/speed.svg", 48, 48)
-    flow_image = load_icon("src/assets/images/flow.svg", 500, 300)
+    flow_image = load_icon("src/assets/images/flow.svg")
     arrow_right_icon = load_icon("src/assets/icons/arrow-right.svg", 24, 24)
 
     st.markdown("""
@@ -199,6 +199,19 @@ def render():
         display:flex;
         justify-content:start;
         align-items: center;
+      }
+
+      .solution-left {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .solution-left img {
+        width: 100%;
+        height: auto;
+        max-width: 100%;
+        object-fit: contain;
       }
     </style>
     """, unsafe_allow_html=True)
