@@ -24,10 +24,10 @@ def render_sidebar():
                     -webkit-background-clip: padding-box, border-box;
                     background-clip: padding-box, border-box;
                     -webkit-text-fill-color: initial;
-                    border-radius: 20px;
+                    border-radius: 20px 20px 20px 0 ;
         }
         .sidebar-content {
-            padding: 25px 45px;
+            padding: 12px 16px;
             display: flex;
             flex-direction: column ;
             align-items: start ;
@@ -50,7 +50,7 @@ def render_sidebar():
             border-radius: 8px;
             transition: all 0.3s ease;
         }
-        
+
         .sidebar-item:hover {
             background: rgba(149, 136, 212, 0.1);
             border-color: rgba(149, 136, 212, 0.3);
@@ -97,28 +97,27 @@ def render_sidebar():
         transition: all 0.3s ease;
         cursor: pointer;
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        flex-wrap: nowrap;
         min-height: 40px;
+        width: 100%;
     }
-    
+
     .file-item:hover {
         background: rgba(149, 136, 212, 0.1);
         border-color: rgba(149, 136, 212, 0.6);
         transform: translateX(4px);
         box-shadow: 0 4px 12px rgba(149, 136, 212, 0.2);
     }
-    
+
     .file-name {
         flex: 1;
     }
-    
+
     .stButton {
         margin: 0 !important;
         padding: 0 !important;
     }
-    
+
     .stButton > button {
         background: rgba(255, 0, 0, 0.1) !important;
         border: 2px solid rgba(255, 0, 0, 0.5) !important;
@@ -136,16 +135,31 @@ def render_sidebar():
         transform: none !important;
         flex-shrink: 0 !important;
     }
-    
+
     .stButton > button:hover {
         background: rgba(255, 0, 0, 0.2) !important;
         border-color: rgba(255, 0, 0, 0.8) !important;
         transform: scale(1.1) !important;
         box-shadow: 0 2px 8px rgba(255, 0, 0, 0.3) !important;
     }
-    
+
     .file-item {
         position: relative !important;
+    }
+
+    /* Стили для колонок с файлами */
+    .stColumn {
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .stColumn:first-child {
+        flex: 1 !important;
+    }
+
+    .stColumn:last-child {
+        flex: 0 0 auto !important;
+        margin-left: 8px !important;
     }
 
 
@@ -168,28 +182,32 @@ def render_sidebar():
                 <span class="checked-files-title">Загруженные файлы:</span>
                 <div class="checked-files-list">
     """, unsafe_allow_html=True)
-    
+
     if files_list:
         for i, file_info in enumerate(files_list):
             filename = file_info.get('filename', 'Неизвестный файл')
             file_id = file_info.get('id', '')
-            
-            st.markdown(f"""
-            <div class="file-item" data-file-id="{file_id}">
-                <div class="file-name">{filename}</div>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            if st.button("🗑️", key=f"delete_{file_id}", help="Удалить файл"):
-                try:
-                    api = Api()
-                    api.delete_file(file_id)
-                    st.rerun()
-                except Exception as e:
-                    st.error(f"Ошибка при удалении: {str(e)}")
+
+            col1, col2 = st.columns([1, 0.1])
+
+            with col1:
+                st.markdown(f"""
+                <div class="file-item" data-file-id="{file_id}">
+                    <div class="file-name">{filename}</div>
+                </div>
+                """, unsafe_allow_html=True)
+
+            with col2:
+                if st.button("🗑️", key=f"delete_{file_id}", help="Удалить файл"):
+                    try:
+                        api = Api()
+                        api.delete_file(file_id)
+                        st.rerun()
+                    except Exception as e:
+                        st.error(f"Ошибка при удалении: {str(e)}")
     else:
         st.markdown('<div class="no-files">Нет загруженных файлов</div>', unsafe_allow_html=True)
-    
+
     st.markdown("""
                 </div>
             </div>
