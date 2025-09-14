@@ -31,7 +31,6 @@ def render_page_header():
     }
 
 
-    /* Стили для якорей */
     .section-anchor {
         scroll-margin-top: 20px;
     }
@@ -158,7 +157,6 @@ def render_page_header():
         transform: translateY(0);
     }
 
-    /* CSS-only hamburger menu using checkbox */
     .hamburger-checkbox {
         display: none;
     }
@@ -265,7 +263,7 @@ def render_page_header():
         box-shadow: 0 10px 30px rgba(109, 75, 196, 0.4);
     }
 
-    /* Responsive Design */
+
     @media (max-width: 768px) {
         .nav-section, .learn-more {
             display: none;
@@ -313,9 +311,7 @@ def render_page_header():
                 <a href="#solution" class="nav-link">AI-решение</a>
             </div>
             <div class="learn-more">
-                <button class="outline-button">
-                    Узнать больше
-                </button>
+                <a href="?page=demo"><button class="outline-button">Попробовать Демо</button></a>
             </div>
             <input type="checkbox" id="hamburger-checkbox" class="hamburger-checkbox">
             <label for="hamburger-checkbox" class="hamburger-label">

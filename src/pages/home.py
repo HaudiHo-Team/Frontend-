@@ -379,7 +379,6 @@ def render():
           </p>
           <div class="feature-buttons">
             <a href="?page=demo"><button class="button">Попробовать Демо</button></a>
-            <button class="outline-button">Узнать больше</button>
           </div>
         </div>
       </div>

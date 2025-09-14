@@ -4,5 +4,6 @@
 """
 
 from . import header
+from . import sidebar
 
-__all__ = ['header']
+__all__ = ['header', 'sidebar']
