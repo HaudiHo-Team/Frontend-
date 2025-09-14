@@ -22,10 +22,8 @@ st.set_page_config(
 def main():
     config = AppConfig()
     
-    # Получаем текущий URL
     query_params = st.query_params
     
-    # Определяем какую страницу показывать
     if 'page' in query_params and query_params['page'] == 'demo':
         demo.render_demo_page()
     else:

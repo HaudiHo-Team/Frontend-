@@ -5,6 +5,9 @@ __all__ = ["load_icon"]
 
 def load_icon(path: str, width: int = 20, height: int = 20) -> str:
     file = Path(path)
+    if not file.exists():
+        return f'<div style="width:{width}px;height:{height}px;display:inline-block;"></div>'
+    
     data = base64.b64encode(file.read_bytes()).decode()
     mime = "image/svg+xml" if file.suffix == ".svg" else "image/png"
     return (

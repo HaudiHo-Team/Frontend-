@@ -1,33 +1,21 @@
-[global]
-developmentMode = false
-
 [server]
-headless = true
 port = 8501
+address = "0.0.0.0"
+headless = true
 enableCORS = false
 enableXsrfProtection = true
-runOnSave = false
+maxUploadSize = 200
 
 [browser]
 gatherUsageStats = false
-serverAddress = "localhost"
+serverAddress = "0.0.0.0"
+serverPort = 8501
 
 [theme]
-primaryColor = "#1f77b4"
+primaryColor = "#9588D4"
 backgroundColor = "#0A0A0A"
-secondaryBackgroundColor = "#f0f2f6"
-textColor = "#262730"
-font = "Montserrat"
+secondaryBackgroundColor = "#1A1A1A"
+textColor = "#FFFFFF"
 
 [logger]
 level = "info"
-
-[client]
-caching = true
-displayEnabled = true
-showErrorDetails = true
-
-[runner]
-magicEnabled = true
-installTracer = false
-fixMatplotlib = true

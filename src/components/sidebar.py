@@ -1,18 +1,22 @@
 import streamlit as st
-import streamlit.components.v1 as components
-from src.utils import load_icon
+from src.api.api import Api
 
 def render_sidebar():
-    upload_docs_icon = load_icon("src/assets/icons/upload.svg", 24, 24)
-    magnificent_find_icon = load_icon("src/assets/icons/magnificent.svg", 24, 24)
-    dir_add_icon = load_icon("src/assets/icons/dir-add.svg", 24, 24)
-    dir_icon = load_icon("src/assets/icons/dir.svg", 24, 24)
+
+    # Получаем список файлов с API
+    try:
+        api = Api()
+        files_response = api.get_files_list()
+        files_list = files_response.get('items', []) if isinstance(files_response, dict) else []
+    except Exception as e:
+        st.error(f"Ошибка загрузки файлов: {str(e)}")
+        files_list = []
 
     st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
         .sidebar {
-                width:fit-content;
+                width:100%;
                border: 1px solid transparent;
                     background:
                       linear-gradient(#0A0A0A, #0A0A0A) padding-box,
@@ -40,6 +44,17 @@ def render_sidebar():
             gap: 8px;
             align-items: center;
             justify-content: start;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-item:hover {
+            background: rgba(149, 136, 212, 0.1);
+            border-color: rgba(149, 136, 212, 0.3);
+            transform: translateX(2px);
         }
 
         .sidebar-name {
@@ -58,6 +73,11 @@ def render_sidebar():
             font-size: 19px;
             font-weight: 500;
             color: #FFFFFF;
+            padding: 8px 16px;
+            background: rgba(149, 136, 212, 0.1);
+            border: 1px solid rgba(149, 136, 212, 0.3);
+            border-radius: 8px;
+            margin-bottom: 8px;
         }
 
         .checked-files-list {
@@ -67,46 +87,110 @@ def render_sidebar():
             align-items: start;
         }
 
-        .file-item {
-            font-size: 17px;
-            color: #D8D8D8;
+    .file-item {
+        font-size: 17px;
+        color: #D8D8D8;
+        padding: 8px 12px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 2px solid rgba(149, 136, 212, 0.3);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: nowrap;
+        min-height: 40px;
+    }
+    
+    .file-item:hover {
+        background: rgba(149, 136, 212, 0.1);
+        border-color: rgba(149, 136, 212, 0.6);
+        transform: translateX(4px);
+        box-shadow: 0 4px 12px rgba(149, 136, 212, 0.2);
+    }
+    
+    .file-name {
+        flex: 1;
+    }
+    
+    .stButton {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    .stButton > button {
+        background: rgba(255, 0, 0, 0.1) !important;
+        border: 2px solid rgba(255, 0, 0, 0.5) !important;
+        color: #ff6b6b !important;
+        border-radius: 6px !important;
+        padding: 4px 8px !important;
+        font-size: 14px !important;
+        transition: all 0.3s ease !important;
+        margin: 0 !important;
+        min-height: 30px !important;
+        width: 30px !important;
+        position: relative !important;
+        right: 0 !important;
+        top: 0 !important;
+        transform: none !important;
+        flex-shrink: 0 !important;
+    }
+    
+    .stButton > button:hover {
+        background: rgba(255, 0, 0, 0.2) !important;
+        border-color: rgba(255, 0, 0, 0.8) !important;
+        transform: scale(1.1) !important;
+        box-shadow: 0 2px 8px rgba(255, 0, 0, 0.3) !important;
+    }
+    
+    .file-item {
+        position: relative !important;
+    }
+
+
+        .no-files {
+            font-size: 14px;
+            color: #6B7280;
+            font-style: italic;
+            text-align: center;
+            padding: 20px;
         }
 
 
     </style>
     """, unsafe_allow_html=True)
 
-    st.markdown(f"""
+    st.markdown("""
     <div class="sidebar">
         <div class="sidebar-content">
-            <div class="sidebar-actions">
-                <div class="sidebar-item" id="upload-document">
-                    { upload_docs_icon }
-                    <span class="sidebar-name">Загрузить документ</span>
-                </div>
-                <div class="sidebar-item" id="find-document">
-                    { magnificent_find_icon }
-                    <span class="sidebar-name">Поиск документов</span>
-                </div>
-                <div class="sidebar-item" id="dir-add">
-                    { dir_add_icon }
-                    <span class="sidebar-name">Новая папка</span>
-                </div>
-                <div class="dir-list">
-                    <div class="sidebar-item">
-                            { dir_icon }
-                             <span class="sidebar-name">БЦК</span>
-                    </div>
-                </div>
-            </div>
             <div class="checked-files-section">
-                <span class="checked-files-title">
-                    Проверенные файлы:
-                </span>
+                <span class="checked-files-title">Загруженные файлы:</span>
                 <div class="checked-files-list">
-                    <span class="file-item">
-                      Contract_agreement_Astana2025.pdf
-                    </span>
+    """, unsafe_allow_html=True)
+    
+    if files_list:
+        for i, file_info in enumerate(files_list):
+            filename = file_info.get('filename', 'Неизвестный файл')
+            file_id = file_info.get('id', '')
+            
+            st.markdown(f"""
+            <div class="file-item" data-file-id="{file_id}">
+                <div class="file-name">{filename}</div>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            if st.button("🗑️", key=f"delete_{file_id}", help="Удалить файл"):
+                try:
+                    api = Api()
+                    api.delete_file(file_id)
+                    st.rerun()
+                except Exception as e:
+                    st.error(f"Ошибка при удалении: {str(e)}")
+    else:
+        st.markdown('<div class="no-files">Нет загруженных файлов</div>', unsafe_allow_html=True)
+    
+    st.markdown("""
                 </div>
             </div>
         </div>

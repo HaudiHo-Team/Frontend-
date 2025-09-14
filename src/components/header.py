@@ -306,9 +306,10 @@ def render_page_header():
                 </svg>
             </div>
             <div class="nav-section">
-                <a href="#home" class="nav-link">Главная</a>
-                <a href="#tasks" class="nav-link">Задача</a>
-                <a href="#solution" class="nav-link">AI-решение</a>
+                <a href="?page=home#home" class="nav-link">Главная</a>
+                <a href="?page=home#tasks" class="nav-link">Задача</a>
+                <a href="?page=home#solution" class="nav-link">AI-решение</a>
+                <a href="?page=demo" class="nav-link">Demo</a>
             </div>
             <div class="learn-more">
                 <a href="?page=demo"><button class="outline-button">Попробовать Демо</button></a>
@@ -321,13 +322,16 @@ def render_page_header():
             </label>
             <div class="mobile-menu">
                <label for="hamburger-checkbox" class="mobile-nav-link">
-                 <a href="#home">Главная</a>
+                 <a href="?page=home#home">Главная</a>
                </label>
                <label for="hamburger-checkbox" class="mobile-nav-link">
-                 <a href="#tasks">Задача</a>
+                 <a href="?page=home#tasks">Задача</a>
                </label>
                <label for="hamburger-checkbox" class="mobile-nav-link">
-                 <a href="#solution">AI-решение</a>
+                 <a href="?page=home#solution">AI-решение</a>
+               </label>
+               <label for="hamburger-checkbox" class="mobile-nav-link">
+                 <a href="?page=demo">Demo</a>
                </label>
             </div>
         </div>
@@ -349,13 +353,31 @@ def render_page_header():
         }
 
         function handleLinkClick(e) {
-            e.preventDefault();
             const href = this.getAttribute('href');
-            closeMenu();
-            setTimeout(() => scrollTo(href), 100);
+            
+            if (href.startsWith('#')) {
+                e.preventDefault();
+                closeMenu();
+                setTimeout(() => scrollTo(href), 100);
+            } else if (href.startsWith('?page=')) {
+                e.preventDefault();
+                closeMenu();
+                
+                if (href.includes('#')) {
+                    const [pagePart, anchorPart] = href.split('#');
+                    window.location.href = pagePart;
+                    setTimeout(() => {
+                        if (anchorPart) {
+                            scrollTo('#' + anchorPart);
+                        }
+                    }, 100);
+                } else {
+                    window.location.href = href;
+                }
+            }
         }
 
-        document.querySelectorAll('a[href^="#"]').forEach(link => {
+        document.querySelectorAll('a[href^="#"], a[href^="?page="]').forEach(link => {
             link.addEventListener('click', handleLinkClick);
         });
     }
