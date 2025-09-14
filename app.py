@@ -22,9 +22,9 @@ st.set_page_config(
 def main():
     config = AppConfig()
     
-    query_params = st.query_params
+    query_params = st.experimental_get_query_params()
     
-    if 'page' in query_params and query_params['page'] == 'demo':
+    if 'page' in query_params and query_params['page'] == ['demo']:
         demo.render_demo_page()
     else:
         home.render()
